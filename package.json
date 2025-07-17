@@ -1,0 +1,15 @@
+{
+  "name": "series-api",
+  "version": "1.0.0",
+  "description": "Servidor para exibir series.json com paginação e otimização",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Seu Nome",
+  "license": "MIT",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "express": "^4.18.2"
+  }
+}
