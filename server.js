@@ -4,12 +4,12 @@ const path = require('path');
 const compression = require('compression');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 10000;
 
-// Ativa compressão GZIP
+// Compressão GZIP
 app.use(compression());
 
-// Cache de leitura do JSON
+// Carrega o JSON uma vez
 let series = [];
 
 function carregarSeries() {
@@ -24,7 +24,6 @@ function carregarSeries() {
   }
 }
 
-// Carrega o JSON uma vez ao iniciar
 carregarSeries();
 
 // Rota com paginação
@@ -34,11 +33,10 @@ app.get('/series', (req, res) => {
 
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
-
   const paginated = series.slice(startIndex, endIndex);
 
   res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Cache-Control', 'public, max-age=60'); // cache de 60s
+  res.setHeader('Cache-Control', 'public, max-age=60');
   res.json({
     page,
     limit,
@@ -47,6 +45,11 @@ app.get('/series', (req, res) => {
   });
 });
 
+// Endpoint de status (opcional para Render)
+app.get('/', (req, res) => {
+  res.send('✅ API de Séries está online!');
+});
+
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}/series`);
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
 });
